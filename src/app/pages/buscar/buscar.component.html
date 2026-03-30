@@ -1,0 +1,59 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <h1 class="text-3xl font-bold mb-6">Search Games</h1>
+
+  <!-- Search by title -->
+  <form class="flex gap-2 mb-6" (ngSubmit)="onSearch()">
+    <input
+      type="text"
+      placeholder="Search by title..."
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+      name="searchQuery"
+      class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <button
+      type="submit"
+      class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Search
+    </button>
+  </form>
+
+  <!-- Genre filters -->
+  <div class="mb-6">
+    <span class="text-sm text-gray-600 mb-2 block">Browse by genre:</span>
+    <div class="flex flex-wrap gap-2">
+      @if (genres$ | async; as genres) {
+        @for (genre of genres; track genre.id) {
+          <button
+            type="button"
+            class="px-3 py-1 text-sm rounded-full border transition-colors"
+            [class]="selectedGenreId() === genre.id
+              ? 'bg-blue-600 text-white border-blue-600'
+              : 'bg-white text-gray-700 border-gray-300 hover:border-blue-500'"
+            (click)="onGenreSelect(genre.id)"
+          >
+            {{ genre.name }}
+          </button>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Clear filters -->
+  @if (searchQuery() || selectedGenreId()) {
+    <button
+      type="button"
+      class="mb-6 text-sm text-blue-600 hover:underline"
+      (click)="clearFilters()"
+    >
+      Clear filters
+    </button>
+  }
+
+  @if (activeMode() === 'search') {
+    <app-game-grid mode="search" [query]="submittedQuery()" [limit]="20" />
+  } @else if (activeMode() === 'genre') {
+    <app-game-grid mode="genre" [genreId]="selectedGenreId()!" [limit]="50" />
+  }
+</div>

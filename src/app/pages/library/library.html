@@ -1,0 +1,34 @@
+<div class="p-6 max-w-7xl mx-auto">
+  @if (pageData$ | async; as page) {
+    <h1 class="text-3xl font-bold mb-2">
+      @if (page.isOwnLibrary) {
+        My Library
+      } @else {
+        {{ page.user?.username }}'s Library
+      }
+    </h1>
+    <p class="text-gray-500 mb-6">{{ page.library.length }} games</p>
+
+    @if (page.loading) {
+      <p class="text-gray-500">Loading library...</p>
+    }
+
+    @if (page.error) {
+      <p class="text-red-500">{{ page.error }}</p>
+    }
+
+    @if (!page.loading && !page.error) {
+      @if (page.library.length === 0) {
+        <p class="text-gray-500">No games in library yet.</p>
+      } @else {
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          @for (item of page.library; track item.id) {
+            @if (item.game) {
+              <app-game-card [game]="item.game" />
+            }
+          }
+        </div>
+      }
+    }
+  }
+</div>

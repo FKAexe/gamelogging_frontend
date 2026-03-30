@@ -1,0 +1,106 @@
+<div class="p-6 max-w-4xl mx-auto">
+  @if (gameData$ | async; as state) {
+    @if (state.loading) {
+      <p class="text-gray-500">Loading...</p>
+    }
+
+    @if (state.error) {
+      <p class="text-red-500">{{ state.error }}</p>
+    }
+
+    @if (state.game; as g) {
+      <div class="flex gap-6 mb-8">
+        @if (g.cover) {
+          <img [src]="g.cover | coverUrl" [alt]="g.name" class="w-48 rounded-lg" />
+        }
+
+        <div>
+          <h1 class="text-3xl font-bold mb-2">{{ g.name }}</h1>
+
+          @if (g.first_release_date | releaseYear; as year) {
+            <p class="text-gray-500 mb-2">{{ year }}</p>
+          }
+
+          @if (g.rating) {
+            <p class="mb-3">Rating: {{ g.rating | number:'1.0-0' }}/100</p>
+          }
+
+          @if (g.genres?.length) {
+            <div class="flex gap-2 flex-wrap mb-4">
+              @for (genre of g.genres; track genre.id ?? $index) {
+                <span class="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-1 rounded-full text-sm">{{ genre.name }}</span>
+              }
+            </div>
+          }
+
+          @if (authenticated()) {
+            <div class="flex gap-2">
+              @if (state.inLibrary) {
+                <button
+                  (click)="removeGame()"
+                  class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                >
+                  Remove from Library
+                </button>
+              } @else {
+                <button
+                  (click)="addGame()"
+                  class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Add to Library
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (g.summary) {
+        <div class="mb-8">
+          <h2 class="text-xl font-semibold mb-3">Summary</h2>
+          <p class="text-gray-600 leading-relaxed">{{ g.summary }}</p>
+        </div>
+      }
+
+      <!-- Log Form (only if game is in library) -->
+      @if (authenticated() && state.inLibrary) {
+        <div class="mb-8">
+          <app-log-form [gameId]="g.id" (logCreated)="onLogCreated($event)" />
+        </div>
+      }
+
+      <!-- Logs Section -->
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Activity Logs</h2>
+
+        @if (state.logs.length === 0) {
+          <p class="text-gray-500">No logs yet for this game.</p>
+        } @else {
+          <div class="space-y-4">
+            @for (log of state.logs; track log.id_log ?? $index) {
+              <div class="bg-white border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center gap-3 mb-2">
+                  <img
+                    [src]="log.profile_pic || 'https://ui-avatars.com/api/?name=' + log.username"
+                    [alt]="log.username"
+                    class="w-8 h-8 rounded-full"
+                  />
+                  <span class="font-medium text-black">{{ log.username }}</span>
+                  @if (log.play_date) {
+                    <span class="text-gray-500 text-sm">{{ log.play_date | date:'MMM d, yyyy' }}</span>
+                  }
+                  @if (log.hours) {
+                    <span class="text-gray-500 text-sm">{{ log.hours }}h played</span>
+                  }
+                </div>
+                @if (log.comment) {
+                  <p class="text-gray-700">{{ log.comment }}</p>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

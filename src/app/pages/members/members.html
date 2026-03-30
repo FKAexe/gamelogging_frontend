@@ -1,0 +1,70 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <h1 class="text-3xl font-bold mb-6">Find Members</h1>
+
+  <!-- Search input -->
+  <input
+    type="text"
+    placeholder="Search by username or name..."
+    [ngModel]="searchQuery$ | async"
+    (ngModelChange)="searchQuery$.next($event)"
+    name="searchQuery"
+    class="w-full px-4 py-2 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+
+  @if (loading$ | async) {
+    <p class="text-gray-500">Loading members...</p>
+  }
+
+  @if (filteredMembers$ | async; as members) {
+    <!-- Results -->
+    @if (members.length > 0) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (member of members; track member.id_usuario) {
+          <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4">
+            <a [routerLink]="['/user', member.username]">
+              <img
+                [src]="getAvatarUrl(member)"
+                [alt]="member.username"
+                class="w-14 h-14 rounded-full object-cover hover:opacity-80 transition-opacity"
+              />
+            </a>
+            <div class="flex-1 min-w-0">
+              <a [routerLink]="['/user', member.username]" class="font-semibold hover:text-blue-600 truncate block">
+                {{ member.username }}
+              </a>
+              @if (member.name) {
+                <p class="text-sm text-gray-500 truncate">{{ member.name }}</p>
+              }
+            </div>
+            @switch (getFriendStatus(member)) {
+              @case ('friend') {
+                <span class="text-sm text-green-600 bg-green-50 px-3 py-1 rounded-full whitespace-nowrap">Friends</span>
+              }
+              @case ('pending') {
+                <span class="text-sm text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full whitespace-nowrap">Pending</span>
+              }
+              @case ('none') {
+                <button
+                  (click)="sendFriendRequest(member.id_usuario)"
+                  class="text-sm text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-full whitespace-nowrap"
+                >
+                  Add Friend
+                </button>
+              }
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- No results -->
+    @if (members.length === 0 && (searchQuery$ | async)) {
+      <p class="text-gray-500">No members found matching "{{ searchQuery$ | async }}"</p>
+    }
+
+    <!-- Empty state -->
+    @if ((allUsersCount$ | async) === 0 && !(loading$ | async)) {
+      <p class="text-gray-500">No members found</p>
+    }
+  }
+</div>

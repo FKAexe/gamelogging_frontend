@@ -1,0 +1,22 @@
+@if (game) {
+  <div class="rounded-lg overflow-hidden bg-white border border-gray-200 transition-transform duration-200 cursor-pointer hover:scale-[1.02]" [routerLink]="['/game', game.id]">
+    <!-- Cover image -->
+    @if (game.cover) {
+      <img
+        [src]="game.cover | coverUrl"
+        [alt]="game.name"
+        class="w-full aspect-[3/4] object-cover block"
+      />
+    } @else {
+      <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+    }
+
+    <!-- Game info -->
+    <div class="p-3">
+      <h3 class="m-0 text-sm font-medium text-black whitespace-nowrap overflow-hidden text-ellipsis">{{ game.name }}</h3>
+      @if (game.rating) {
+        <p class="mt-1 text-xs text-gray-500">{{ game.rating | number:'1.0-0' }}/100</p>
+      }
+    </div>
+  </div>
+}

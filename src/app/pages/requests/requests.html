@@ -1,0 +1,54 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <h1 class="text-3xl font-bold mb-6">Friend Requests</h1>
+
+  @if (requestsData$ | async; as state) {
+    <!-- Loading state -->
+    @if (state.loading) {
+      <p class="text-gray-500">Loading requests...</p>
+    }
+
+    <!-- Requests list -->
+    @if (!state.loading && state.friendRequests.length > 0) {
+      @for (request of state.friendRequests; track request.id) {
+        <div class="bg-white rounded-lg shadow p-4 mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <a [routerLink]="['/user', request.user?.username]">
+              <img
+                [src]="getAvatarUrl(request.user)"
+                [alt]="request.user?.username"
+                class="w-12 h-12 rounded-full object-cover hover:opacity-80 transition-opacity"
+              />
+            </a>
+            <div>
+              <a [routerLink]="['/user', request.user?.username]" class="font-semibold hover:text-blue-600">
+                {{ request.user?.username }}
+              </a>
+              @if (request.user?.name) {
+                <p class="text-sm text-gray-500">{{ request.user?.name }}</p>
+              }
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button
+              (click)="acceptRequest(request.id)"
+              class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Accept
+            </button>
+            <button
+              (click)="rejectRequest(request.id)"
+              class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+            >
+              Reject
+            </button>
+          </div>
+        </div>
+      }
+    }
+
+    <!-- Empty state -->
+    @if (!state.loading && state.friendRequests.length === 0) {
+      <p class="text-gray-500">No pending friend requests</p>
+    }
+  }
+</div>

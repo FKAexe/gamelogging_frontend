@@ -1,0 +1,34 @@
+<nav class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-50">
+  <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+
+    <!-- Left: Brand + main links -->
+    <div class="flex items-center gap-8">
+      <a routerLink="/" class="text-lg font-bold text-black">GameLog</a>
+      <a routerLink="/search" class="text-sm text-gray-600 hover:text-black transition-colors">Search</a>
+      @if (isLoggedIn()) {
+        <a routerLink="/members" class="text-sm text-gray-600 hover:text-black transition-colors">Members</a>
+        <a routerLink="/my-library" class="text-sm text-gray-600 hover:text-black transition-colors">Library</a>
+      }
+    </div>
+
+    <!-- Right: Auth links -->
+    <div class="flex items-center gap-4">
+      @if (isLoggedIn()) {
+        <a routerLink="/requests" class="text-sm text-gray-600 hover:text-black transition-colors">Requests</a>
+        <a routerLink="/profile" class="text-sm text-gray-600 hover:text-black transition-colors">Profile</a>
+        <button
+          (click)="logout()"
+          class="text-sm px-4 py-1.5 border border-gray-300 rounded hover:bg-gray-50 text-black transition-colors"
+        >
+          Logout
+        </button>
+      } @else {
+        <a routerLink="/login" class="text-sm text-gray-600 hover:text-black transition-colors">Login</a>
+        <a routerLink="/register" class="text-sm px-4 py-1.5 bg-black text-white rounded hover:bg-gray-800 transition-colors">
+          Register
+        </a>
+      }
+    </div>
+
+  </div>
+</nav>

@@ -1,0 +1,141 @@
+<div class="p-6 max-w-7xl mx-auto">
+  @if (pageData$ | async; as page) {
+    @if (page.loading) {
+      <p class="text-gray-500">Loading logs...</p>
+    }
+
+    @if (page.error) {
+      <p class="text-red-500">{{ page.error }}</p>
+    }
+
+    @if (!page.loading && !page.error) {
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold">
+          @if (page.user) {
+            {{ page.user.username }}'s Logs
+          }
+        </h1>
+        @if (isOwnPage()) {
+          <button
+            (click)="toggleForm()"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            {{ showForm() ? 'Cancel' : 'New Log' }}
+          </button>
+        }
+      </div>
+
+      @if (showForm()) {
+        <div class="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
+          @if (!selectedGame()) {
+            <!-- Game search -->
+            <h3 class="text-lg font-semibold mb-3">Select a game</h3>
+            <form class="flex gap-2 mb-4" (ngSubmit)="searchGames()">
+              <input
+                type="text"
+                placeholder="Search for a game..."
+                [ngModel]="gameQuery()"
+                (ngModelChange)="gameQuery.set($event)"
+                name="gameQuery"
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="submit"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              >
+                Search
+              </button>
+            </form>
+            @if (gameSearch$ | async; as search) {
+              @if (search.searching) {
+                <p class="text-gray-500 text-sm">Searching...</p>
+              }
+              @if (search.results.length > 0) {
+                <div class="space-y-2">
+                  @for (game of search.results; track game.id) {
+                    <button
+                      (click)="selectGame(game)"
+                      class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-left"
+                    >
+                      @if (game.cover) {
+                        <img
+                          [src]="game.cover | coverUrl"
+                          [alt]="game.name"
+                          class="w-10 h-14 object-cover rounded"
+                        />
+                      } @else {
+                        <div class="w-10 h-14 bg-gray-200 rounded"></div>
+                      }
+                      <span class="font-medium">{{ game.name }}</span>
+                    </button>
+                  }
+                </div>
+              }
+            }
+          } @else {
+            <div class="flex items-center gap-3 mb-4">
+              @if (selectedGame()!.cover) {
+                <img
+                  [src]="selectedGame()!.cover | coverUrl"
+                  [alt]="selectedGame()!.name"
+                  class="w-10 h-14 object-cover rounded"
+                />
+              }
+              <span class="font-semibold">{{ selectedGame()!.name }}</span>
+              <button
+                (click)="selectedGame.set(null)"
+                class="ml-auto text-sm text-gray-500 hover:text-gray-700"
+              >
+                Change game
+              </button>
+            </div>
+            <app-log-form
+              [gameId]="selectedGame()!.id"
+              (logCreated)="onLogCreated($event)"
+            />
+          }
+        </div>
+      }
+
+      @if (page.logs.length > 0) {
+        <div class="space-y-4">
+          @for (log of page.logs; track log.id_log) {
+            <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4">
+              @if (log.game) {
+                <a [routerLink]="['/game', log.game.id]">
+                  @if (log.game.cover) {
+                    <img
+                      [src]="log.game.cover | coverUrl"
+                      [alt]="log.game.name"
+                      class="w-12 h-16 object-cover rounded hover:opacity-80 transition-opacity"
+                    />
+                  } @else {
+                    <div class="w-12 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
+                      No cover
+                    </div>
+                  }
+                </a>
+              }
+              <div class="flex-1 min-w-0">
+                <a [routerLink]="['/game', log.game?.id]" class="font-semibold hover:text-blue-600 truncate block">
+                  {{ log.game?.name || 'Unknown game' }}
+                </a>
+                @if (log.comment) {
+                  <p class="text-sm text-gray-600 truncate">{{ log.comment }}</p>
+                }
+                @if (log.play_date) {
+                  <p class="text-xs text-gray-400">{{ log.play_date | date:'MMM d, yyyy' }}</p>
+                }
+              </div>
+              @if (log.hours) {
+                <span class="text-sm text-gray-500 whitespace-nowrap">{{ log.hours }}h</span>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="text-gray-500">No logs yet</p>
+      }
+    }
+  }
+</div>

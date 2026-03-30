@@ -1,0 +1,21 @@
+<section class="mb-10">
+  @if (title()) {
+    <h2 class="text-3xl font-bold mb-2">{{ title() }}</h2>
+  }
+
+  @if (games$ | async; as state) {
+    @if (state.loading) {
+      <p class="text-gray-500">Loading games...</p>
+    }
+    @if (state.error) {
+      <p class="text-red-500">{{ state.error }}</p>
+    }
+    @if (!state.loading && !state.error) {
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5 mt-5">
+        @for (game of state.games; track game.id) {
+          <app-game-card [game]="game" />
+        }
+      </div>
+    }
+  }
+</section>

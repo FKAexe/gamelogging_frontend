@@ -1,0 +1,57 @@
+<form (ngSubmit)="submitLog()" class="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-4">
+  <h3 class="text-lg font-semibold text-black">Log a Play Session</h3>
+
+  <div>
+    <label for="comment" class="block text-sm text-gray-600 mb-1">Comment</label>
+    <textarea
+      id="comment"
+      [ngModel]="comment()"
+      (ngModelChange)="comment.set($event)"
+      name="comment"
+      rows="3"
+      placeholder="How was your session?"
+      class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
+    ></textarea>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="playDate" class="block text-sm text-gray-600 mb-1">Play Date</label>
+      <input
+        id="playDate"
+        type="date"
+        [ngModel]="playDate()"
+        (ngModelChange)="playDate.set($event)"
+        name="playDate"
+        class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-gray-400"
+      />
+    </div>
+
+    <div>
+      <label for="hours" class="block text-sm text-gray-600 mb-1">Hours Played</label>
+      <input
+        id="hours"
+        type="number"
+        [ngModel]="hours()"
+        (ngModelChange)="hours.set($event)"
+        name="hours"
+        min="0"
+        step="0.5"
+        placeholder="0"
+        class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
+      />
+    </div>
+  </div>
+
+  @if (error()) {
+    <p class="text-red-500 text-sm">{{ error() }}</p>
+  }
+
+  <button
+    type="submit"
+    [disabled]="loading()"
+    class="w-full py-2 bg-black text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+  >
+    {{ loading() ? 'Saving...' : 'Add Log' }}
+  </button>
+</form>
