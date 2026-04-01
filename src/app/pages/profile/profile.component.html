@@ -12,7 +12,7 @@
 
     @if (!state.loading && state.user) {
       <!-- User Info Card -->
-      <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-6 mb-6">
         <div class="flex items-start gap-6">
           <img
             [src]="getAvatarUrl(state.user)"
@@ -23,7 +23,7 @@
             <div class="flex items-center gap-4">
               <h1 class="text-2xl font-bold">{{ state.user.username }}</h1>
               @if (state.isOwnProfile) {
-                <span class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">You</span>
+                <span class="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">You</span>
               }
             </div>
 
@@ -34,26 +34,26 @@
                   placeholder="Name"
                   [ngModel]="editForm().name"
                   (ngModelChange)="setEditName($event)"
-                  class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-1.5 text-sm border border-white/20 rounded-lg bg-[#0f0f0f] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 <textarea
                   placeholder="Bio"
                   [ngModel]="editForm().bio"
                   (ngModelChange)="setEditBio($event)"
                   rows="3"
-                  class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  class="w-full px-3 py-1.5 text-sm border border-white/20 rounded-lg bg-[#0f0f0f] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                 ></textarea>
                 <div class="flex gap-2">
                   <button
                     (click)="saveProfile(state.user)"
                     [disabled]="saving()"
-                    class="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                    class="px-4 py-1.5 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
                   >
                     {{ saving() ? 'Saving...' : 'Save' }}
                   </button>
                   <button
                     (click)="editing.set(false)"
-                    class="px-4 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                    class="px-4 py-1.5 text-sm border border-white/20 rounded-lg hover:bg-white/10 text-white"
                   >
                     Cancel
                   </button>
@@ -61,10 +61,10 @@
               </div>
             } @else {
               @if (state.user.name) {
-                <p class="text-gray-600 mt-1">{{ state.user.name }}</p>
+                <p class="text-gray-400 mt-1">{{ state.user.name }}</p>
               }
               @if (state.user.bio) {
-                <p class="text-gray-700 mt-3">{{ state.user.bio }}</p>
+                <p class="text-gray-300 mt-3">{{ state.user.bio }}</p>
               }
             }
 
@@ -75,7 +75,7 @@
             @if (state.isOwnProfile && !editing()) {
               <button
                 (click)="startEditing(state.user)"
-                class="mt-4 px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                class="mt-4 px-4 py-2 text-sm border border-white/20 rounded-lg hover:bg-white/10 text-white"
               >
                 Edit Profile
               </button>
@@ -86,16 +86,16 @@
 
       <!-- Stats Row -->
       <div [class]="state.isOwnProfile ? 'grid grid-cols-3 gap-4 mb-6' : 'grid grid-cols-2 gap-4 mb-6'">
-        <div class="bg-white rounded-lg shadow p-4 text-center">
+        <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-4 text-center">
           <p class="text-2xl font-bold">{{ state.library.length }}</p>
           <p class="text-gray-500 text-sm">Games</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4 text-center">
+        <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-4 text-center">
           <p class="text-2xl font-bold">{{ state.logs.length }}</p>
           <p class="text-gray-500 text-sm">Logs</p>
         </div>
         @if (state.isOwnProfile) {
-          <div class="bg-white rounded-lg shadow p-4 text-center">
+          <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-4 text-center">
             <p class="text-2xl font-bold">{{ state.friends.length }}</p>
             <p class="text-gray-500 text-sm">Friends</p>
           </div>
@@ -104,14 +104,12 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Library Card -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Library</h2>
-            @if (state.library.length > 4) {
-              <a class="text-blue-600 text-sm hover:underline" [routerLink]="state.isOwnProfile ? '/my-library' : ['/library', state.user!.id_usuario]">
-                View all
-              </a>
-            }
+            <a class="text-purple-400 text-sm hover:underline" [routerLink]="state.isOwnProfile ? '/my-library' : ['/library', state.user!.id_usuario]">
+              View all
+            </a>
           </div>
 
           @if (state.library.length === 0) {
@@ -128,7 +126,7 @@
                         class="w-full aspect-[3/4] object-cover rounded hover:opacity-80 transition-opacity"
                       />
                     } @else {
-                      <div class="w-full aspect-[3/4] bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
+                      <div class="w-full aspect-[3/4] bg-[#2a2a2a] rounded flex items-center justify-center text-xs text-gray-500">
                         No cover
                       </div>
                     }
@@ -140,10 +138,10 @@
         </div>
 
         <!-- Recent Activity Card -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-6">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Logs</h2>
-            <a class="text-blue-600 text-sm hover:underline" [routerLink]="['/logs', state.user!.id_usuario]">
+            <a class="text-purple-400 text-sm hover:underline" [routerLink]="['/logs', state.user!.id_usuario]">
               View all
             </a>
           </div>
@@ -153,7 +151,7 @@
           } @else {
             <div class="space-y-3">
               @for (log of state.logs; track log.id_log) {
-                <div class="flex items-center gap-3 p-2 rounded hover:bg-gray-50">
+                <div class="flex items-center gap-3 p-2 rounded hover:bg-white/5">
                   @if (log.game) {
                     <a [routerLink]="['/game', log.game.id]">
                       @if (log.game.cover) {
@@ -163,17 +161,17 @@
                           class="w-10 h-14 object-cover rounded"
                         />
                       } @else {
-                        <div class="w-10 h-14 bg-gray-200 rounded"></div>
+                        <div class="w-10 h-14 bg-[#2a2a2a] rounded"></div>
                       }
                     </a>
                   }
                   <div class="flex-1 min-w-0">
                     <p class="font-medium truncate">{{ log.game?.name || 'Unknown game' }}</p>
                     @if (log.comment) {
-                      <p class="text-sm text-gray-600 truncate">{{ log.comment }}</p>
+                      <p class="text-sm text-gray-400 truncate">{{ log.comment }}</p>
                     }
                     @if (log.play_date) {
-                      <p class="text-xs text-gray-400">{{ log.play_date | date:'MMM d, yyyy' }}</p>
+                      <p class="text-xs text-gray-500">{{ log.play_date | date:'MMM d, yyyy' }}</p>
                     }
                   </div>
                   @if (log.hours) {
@@ -187,7 +185,7 @@
 
         <!-- Friends Card (only for own profile) -->
         @if (state.isOwnProfile) {
-          <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+          <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-6 lg:col-span-2">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg font-semibold">Friends</h2>
             </div>
@@ -199,7 +197,7 @@
                 @for (friend of state.friends.slice(0, 8); track friend.id) {
                   <a
                     [routerLink]="['/user', friend.id_usuario]"
-                    class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50"
+                    class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/5"
                   >
                     <img
                       [src]="friend.profile_pic || 'https://ui-avatars.com/api/?name=' + friend.username"

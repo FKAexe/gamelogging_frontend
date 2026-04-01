@@ -9,29 +9,55 @@
     }
 
     @if (state.game; as g) {
-      <div class="flex gap-6 mb-8">
+      <div class="flex flex-col sm:flex-row gap-6 mb-8">
         @if (g.cover) {
-          <img [src]="g.cover | coverUrl" [alt]="g.name" class="w-48 rounded-lg" />
+          <img [src]="g.cover | coverUrl" [alt]="g.name" class="w-40 sm:w-48 rounded-lg self-start shrink-0 mx-auto sm:mx-0" />
         }
 
-        <div>
-          <h1 class="text-3xl font-bold mb-2">{{ g.name }}</h1>
+        <div class="flex-1">
+          <h1 class="text-2xl sm:text-3xl font-bold mb-4">{{ g.name }}</h1>
 
-          @if (g.first_release_date | releaseYear; as year) {
-            <p class="text-gray-500 mb-2">{{ year }}</p>
-          }
-
-          @if (g.rating) {
-            <p class="mb-3">Rating: {{ g.rating | number:'1.0-0' }}/100</p>
-          }
-
-          @if (g.genres?.length) {
-            <div class="flex gap-2 flex-wrap mb-4">
-              @for (genre of g.genres; track genre.id ?? $index) {
-                <span class="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-1 rounded-full text-sm">{{ genre.name }}</span>
-              }
-            </div>
-          }
+          <!-- Metadata grid -->
+          <div class="grid grid-cols-2 gap-x-6 gap-y-3 mb-5 text-sm">
+            @if (g.release_date) {
+              <div>
+                <p class="text-gray-500 uppercase tracking-wide text-xs mb-1">Release Date</p>
+                <p>{{ g.release_date | date:'MMMM d, yyyy' }}</p>
+              </div>
+            }
+            @if (g.rating) {
+              <div>
+                <p class="text-gray-500 uppercase tracking-wide text-xs mb-1">Rating</p>
+                <p>{{ g.rating | number:'1.0-0' }}/100</p>
+              </div>
+            }
+            @if (g.genres?.length) {
+              <div>
+                <p class="text-gray-500 uppercase tracking-wide text-xs mb-1">Genres</p>
+                <div class="flex flex-wrap gap-1">
+                  @for (genre of g.genres!; track genre) {
+                    <span class="px-2 py-0.5 bg-white/10 rounded text-xs">{{ genre }}</span>
+                  }
+                </div>
+              </div>
+            }
+            @if (g.platforms?.length) {
+              <div>
+                <p class="text-gray-500 uppercase tracking-wide text-xs mb-1">Platforms</p>
+                <div class="flex flex-wrap gap-1">
+                  @for (platform of g.platforms!; track platform) {
+                    <span class="px-2 py-0.5 bg-white/10 rounded text-xs">{{ platform }}</span>
+                  }
+                </div>
+              </div>
+            }
+            @if (g.developers?.length) {
+              <div class="col-span-2">
+                <p class="text-gray-500 uppercase tracking-wide text-xs mb-1">Developer</p>
+                <p>{{ g.developers![0] }}</p>
+              </div>
+            }
+          </div>
 
           @if (authenticated()) {
             <div class="flex gap-2">
@@ -45,7 +71,7 @@
               } @else {
                 <button
                   (click)="addGame()"
-                  class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                  class="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   Add to Library
                 </button>
@@ -58,7 +84,7 @@
       @if (g.summary) {
         <div class="mb-8">
           <h2 class="text-xl font-semibold mb-3">Summary</h2>
-          <p class="text-gray-600 leading-relaxed">{{ g.summary }}</p>
+          <p class="text-gray-300 leading-relaxed">{{ g.summary }}</p>
         </div>
       }
 
@@ -78,14 +104,14 @@
         } @else {
           <div class="space-y-4">
             @for (log of state.logs; track log.id_log ?? $index) {
-              <div class="bg-white border border-gray-200 rounded-lg p-4">
+              <div class="bg-[#1a1a1a] border border-white/10 rounded-lg p-4">
                 <div class="flex items-center gap-3 mb-2">
                   <img
                     [src]="log.profile_pic || 'https://ui-avatars.com/api/?name=' + log.username"
                     [alt]="log.username"
                     class="w-8 h-8 rounded-full"
                   />
-                  <span class="font-medium text-black">{{ log.username }}</span>
+                  <span class="font-medium text-white">{{ log.username }}</span>
                   @if (log.play_date) {
                     <span class="text-gray-500 text-sm">{{ log.play_date | date:'MMM d, yyyy' }}</span>
                   }
@@ -94,7 +120,7 @@
                   }
                 </div>
                 @if (log.comment) {
-                  <p class="text-gray-700">{{ log.comment }}</p>
+                  <p class="text-gray-400">{{ log.comment }}</p>
                 }
               </div>
             }

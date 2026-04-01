@@ -34,15 +34,12 @@ export interface Game {
   storyline?: string;
   rating?: number;
   rating_count?: number;
-  aggregated_rating?: number;
-  aggregated_rating_count?: number;
   first_release_date?: number;
-  cover?: string | null; // URL string from backend
-  genres?: Genre[];
-  platforms?: Platform[];
-  involved_companies?: InvolvedCompany[];
-  screenshots?: Screenshot[];
-  videos?: Video[];
+  release_date?: string | null;
+  cover?: string | null;
+  genres?: string[];
+  platforms?: string[];
+  developers?: string[];
   library_count?: number;
   log_count?: number;
 }

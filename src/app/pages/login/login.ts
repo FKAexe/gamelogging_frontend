@@ -30,7 +30,7 @@ export class Login {
   login() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.errorMsg = 'Completa los campos correctamente.';
+      this.errorMsg = 'Complete the fields correctly.';
       return;
     }
 
@@ -48,9 +48,9 @@ export class Login {
         this.loading = false;
         console.error('Error en login:', err);
         if (err.status === 401) {
-          this.errorMsg = 'Correo o contraseña incorrectos.';
+          this.errorMsg = 'Invalid email or password.';
         } else {
-          this.errorMsg = 'No se ha podido iniciar sesión. Inténtalo más tarde.';
+          this.errorMsg = 'Cannot login at the moment. Please try again later.';
         }
       },
     });

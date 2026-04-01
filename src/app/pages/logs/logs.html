@@ -18,7 +18,7 @@
         @if (isOwnPage()) {
           <button
             (click)="toggleForm()"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
           >
             {{ showForm() ? 'Cancel' : 'New Log' }}
           </button>
@@ -26,7 +26,7 @@
       </div>
 
       @if (showForm()) {
-        <div class="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
+        <div class="bg-[#1a1a1a] rounded-lg p-6 mb-6 border border-white/10">
           @if (!selectedGame()) {
             <!-- Game search -->
             <h3 class="text-lg font-semibold mb-3">Select a game</h3>
@@ -37,11 +37,11 @@
                 [ngModel]="gameQuery()"
                 (ngModelChange)="gameQuery.set($event)"
                 name="gameQuery"
-                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="flex-1 px-4 py-2 border border-white/20 rounded-lg bg-[#0f0f0f] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               <button
                 type="submit"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
               >
                 Search
               </button>
@@ -55,7 +55,7 @@
                   @for (game of search.results; track game.id) {
                     <button
                       (click)="selectGame(game)"
-                      class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-left"
+                      class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 text-left"
                     >
                       @if (game.cover) {
                         <img
@@ -64,7 +64,7 @@
                           class="w-10 h-14 object-cover rounded"
                         />
                       } @else {
-                        <div class="w-10 h-14 bg-gray-200 rounded"></div>
+                        <div class="w-10 h-14 bg-[#2a2a2a] rounded"></div>
                       }
                       <span class="font-medium">{{ game.name }}</span>
                     </button>
@@ -84,7 +84,7 @@
               <span class="font-semibold">{{ selectedGame()!.name }}</span>
               <button
                 (click)="selectedGame.set(null)"
-                class="ml-auto text-sm text-gray-500 hover:text-gray-700"
+                class="ml-auto text-sm text-gray-400 hover:text-gray-200"
               >
                 Change game
               </button>
@@ -100,7 +100,7 @@
       @if (page.logs.length > 0) {
         <div class="space-y-4">
           @for (log of page.logs; track log.id_log) {
-            <div class="bg-white rounded-lg shadow p-4 flex items-center gap-4">
+            <div class="bg-[#1a1a1a] rounded-lg border border-white/10 p-4 flex items-center gap-4">
               @if (log.game) {
                 <a [routerLink]="['/game', log.game.id]">
                   @if (log.game.cover) {
@@ -110,21 +110,21 @@
                       class="w-12 h-16 object-cover rounded hover:opacity-80 transition-opacity"
                     />
                   } @else {
-                    <div class="w-12 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
+                    <div class="w-12 h-16 bg-[#2a2a2a] rounded flex items-center justify-center text-xs text-gray-500">
                       No cover
                     </div>
                   }
                 </a>
               }
               <div class="flex-1 min-w-0">
-                <a [routerLink]="['/game', log.game?.id]" class="font-semibold hover:text-blue-600 truncate block">
+                <a [routerLink]="['/game', log.game?.id]" class="font-semibold hover:text-purple-400 truncate block">
                   {{ log.game?.name || 'Unknown game' }}
                 </a>
                 @if (log.comment) {
-                  <p class="text-sm text-gray-600 truncate">{{ log.comment }}</p>
+                  <p class="text-sm text-gray-400 truncate">{{ log.comment }}</p>
                 }
                 @if (log.play_date) {
-                  <p class="text-xs text-gray-400">{{ log.play_date | date:'MMM d, yyyy' }}</p>
+                  <p class="text-xs text-gray-500">{{ log.play_date | date:'MMM d, yyyy' }}</p>
                 }
               </div>
               @if (log.hours) {

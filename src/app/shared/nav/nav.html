@@ -1,34 +1,68 @@
-<nav class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-50">
+<nav class="fixed top-0 left-0 w-full h-16 bg-[#0f0f0f] border-b border-white/10 z-50">
   <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
 
-    <!-- Left: Brand + main links -->
+    <!-- Left: Brand + main links (hidden on mobile) -->
     <div class="flex items-center gap-8">
-      <a routerLink="/" class="text-lg font-bold text-black">GameLog</a>
-      <a routerLink="/search" class="text-sm text-gray-600 hover:text-black transition-colors">Search</a>
-      @if (isLoggedIn()) {
-        <a routerLink="/members" class="text-sm text-gray-600 hover:text-black transition-colors">Members</a>
-        <a routerLink="/my-library" class="text-sm text-gray-600 hover:text-black transition-colors">Library</a>
-      }
+      <a routerLink="/" class="text-lg font-bold text-white">GameLog</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a routerLink="/search" class="text-sm text-gray-400 hover:text-white transition-colors">Search</a>
+        @if (isLoggedIn()) {
+          <a routerLink="/members" class="text-sm text-gray-400 hover:text-white transition-colors">Members</a>
+          <a routerLink="/my-library" class="text-sm text-gray-400 hover:text-white transition-colors">Library</a>
+          <a [routerLink]="['/logs', currentUser()?.id_usuario]" class="text-sm text-gray-400 hover:text-white transition-colors">Logs</a>
+        }
+      </div>
     </div>
 
-    <!-- Right: Auth links -->
+    <!-- Right: Auth links (hidden on mobile) + burger -->
     <div class="flex items-center gap-4">
-      @if (isLoggedIn()) {
-        <a routerLink="/requests" class="text-sm text-gray-600 hover:text-black transition-colors">Requests</a>
-        <a routerLink="/profile" class="text-sm text-gray-600 hover:text-black transition-colors">Profile</a>
-        <button
-          (click)="logout()"
-          class="text-sm px-4 py-1.5 border border-gray-300 rounded hover:bg-gray-50 text-black transition-colors"
-        >
-          Logout
-        </button>
-      } @else {
-        <a routerLink="/login" class="text-sm text-gray-600 hover:text-black transition-colors">Login</a>
-        <a routerLink="/register" class="text-sm px-4 py-1.5 bg-black text-white rounded hover:bg-gray-800 transition-colors">
-          Register
-        </a>
-      }
+      <div class="hidden md:flex items-center gap-4">
+        @if (isLoggedIn()) {
+          <a routerLink="/requests" class="text-sm text-gray-400 hover:text-white transition-colors">Requests</a>
+          <a routerLink="/profile" class="text-sm text-gray-400 hover:text-white transition-colors">Profile</a>
+          <button
+            (click)="logout()"
+            class="text-sm px-4 py-1.5 border border-white/20 rounded hover:bg-white/10 text-white transition-colors"
+          >
+            Logout
+          </button>
+        } @else {
+          <a routerLink="/login" class="text-sm text-gray-400 hover:text-white transition-colors">Login</a>
+          <a routerLink="/register" class="text-sm px-4 py-1.5 bg-white text-black rounded hover:bg-gray-200 transition-colors">
+            Register
+          </a>
+        }
+      </div>
+
+      <!-- Burger button (mobile only) -->
+      <button
+        class="md:hidden flex flex-col gap-1.5 p-1"
+        (click)="menuOpen.set(!menuOpen())"
+        aria-label="Toggle menu"
+      >
+        <span class="block w-6 h-0.5 bg-white transition-all" [class.rotate-45]="menuOpen()" [class.translate-y-2]="menuOpen()"></span>
+        <span class="block w-6 h-0.5 bg-white transition-all" [class.opacity-0]="menuOpen()"></span>
+        <span class="block w-6 h-0.5 bg-white transition-all" [class.-rotate-45]="menuOpen()" [class.-translate-y-2]="menuOpen()"></span>
+      </button>
     </div>
 
   </div>
+
+  <!-- Mobile menu -->
+  @if (menuOpen()) {
+    <div class="md:hidden bg-[#0f0f0f] border-t border-white/10 px-6 py-4 flex flex-col gap-4">
+      <a routerLink="/search" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Search</a>
+      @if (isLoggedIn()) {
+        <a routerLink="/members" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Members</a>
+        <a routerLink="/my-library" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Library</a>
+        <a [routerLink]="['/logs', currentUser()?.id_usuario]" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Logs</a>
+        <a routerLink="/requests" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Requests</a>
+        <a routerLink="/profile" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Profile</a>
+        <button (click)="logout()" class="text-sm text-left text-gray-400 hover:text-white transition-colors">Logout</button>
+      } @else {
+        <a routerLink="/login" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Login</a>
+        <a routerLink="/register" (click)="menuOpen.set(false)" class="text-sm text-gray-400 hover:text-white transition-colors">Register</a>
+      }
+    </div>
+  }
 </nav>

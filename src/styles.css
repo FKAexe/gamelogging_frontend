@@ -2,7 +2,11 @@
 @import "tailwindcss";
 
 html, body {
-  background-color: white;
-  color: black;
-  font-family: system-ui, sans-serif;
+  background-color: #0f0f0f;
+  color: #e5e5e5;
+  font-family: 'Karla', sans-serif;
+}
+
+code, kbd, pre, samp, .font-mono {
+  font-family: 'Inconsolata', monospace;
 }

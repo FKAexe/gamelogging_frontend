@@ -1,5 +1,5 @@
 @if (game) {
-  <div class="rounded-lg overflow-hidden bg-white border border-gray-200 transition-transform duration-200 cursor-pointer hover:scale-[1.02]" [routerLink]="['/game', game.id]">
+  <div class="rounded-lg overflow-hidden bg-[#1a1a1a] border border-white/10 transition-transform duration-200 cursor-pointer hover:scale-[1.02]" [routerLink]="['/game', game.id]">
     <!-- Cover image -->
     @if (game.cover) {
       <img
@@ -8,14 +8,14 @@
         class="w-full aspect-[3/4] object-cover block"
       />
     } @else {
-      <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+      <div class="w-full aspect-[3/4] bg-[#2a2a2a] flex items-center justify-center text-gray-500 text-sm">No Image</div>
     }
 
     <!-- Game info -->
     <div class="p-3">
-      <h3 class="m-0 text-sm font-medium text-black whitespace-nowrap overflow-hidden text-ellipsis">{{ game.name }}</h3>
+      <h3 class="m-0 sm:text-lg text-xs font-medium text-white whitespace-nowrap overflow-hidden text-ellipsis">{{ game.name }}</h3>
       @if (game.rating) {
-        <p class="mt-1 text-xs text-gray-500">{{ game.rating | number:'1.0-0' }}/100</p>
+        <p class="mt-2 mb-2 text-sm text-gray-500">{{ game.rating | number:'1.0-0' }}/100</p>
       }
     </div>
   </div>
